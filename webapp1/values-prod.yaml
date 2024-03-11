@@ -1,5 +1,5 @@
 appName: mywebapp-prod
-replicas: 10
+replicas:5
 
 service:
   ports:
