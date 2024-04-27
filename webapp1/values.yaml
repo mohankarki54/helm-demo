@@ -1,5 +1,5 @@
 appName: mywebapp
-replicas: 2
+replicas: 5
 namespace: default
 
 configmap:
