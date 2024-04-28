@@ -3,7 +3,7 @@ pipeline {
     parameters {
         string(name: 'argocdServer', defaultValue: 'argocd.qa.givelify.com', description: 'Argocd Server')
         string(name: 'applicationName', defaultValue: 'webapp-prod', description: 'Application Name')
-        string(name: 'Replicas', defaultValue: '5', description: 'Enter the replicas count')
+        string(name: 'Replicas', defaultValue: '2', description: 'Enter the replicas count')
         string(name: 'BRANCH', defaultValue: 'main', description: 'Enter the branch name')
     }
 
@@ -56,18 +56,28 @@ pipeline {
       steps {
         git credentialsId: 'mohan-argocd-poc', url: "https://$REPO_URL", branch: "main"
           dir('webapp1') {
-            sh "sed -i 's/replicas.*/replicas: ${params.Replicas}/g' values-prod.yaml"
-            sh "git config user.email mkarki@gmail.com"
-            sh "git config user.name devops-bot"
-            sh "git add values-prod.yaml"
-            sh "git commit -m 'Update replica count to: ${BUILD_NUMBER}'"
-            sh "echo 'updating replicas'"
-            withCredentials([usernamePassword(credentialsId: 'mohan-argocd-poc', passwordVariable: "$GITHUB_TOKEN", usernameVariable: "$GIT_USERNAME")]) {
-                sh "git push https://${GITHUB_TOKEN}@${REPO_URL} HEAD:main -f"
-            }
+              script {
+                sh "sed -i 's/replicas.*/replicas: ${params.Replicas}/g' values-prod.yaml"
+                // Check if there are changes to the file
+                def gitDiff = sh(script: 'git diff --exit-code values-prod.yaml', returnStatus: true)
+                
+                if (gitDiff == 0) {
+                    echo "No changes to commit,"
+                } else {
+                    sh "git config user.email mkarki@gmail.com"
+                    sh "git config user.name devops-bot"
+                    sh "git add values-prod.yaml"
+                    sh "git commit -m 'Update replica count to: ${BUILD_NUMBER}'"
+                    sh "echo 'updating replicas'"
+                    withCredentials([usernamePassword(credentialsId: 'mohan-argocd-poc', passwordVariable: "$GITHUB_TOKEN", usernameVariable: "$GIT_USERNAME")]) {
+                        sh "git push https://${GITHUB_TOKEN}@${REPO_URL} HEAD:main -f"
+                    }
+                }
+              }
           }
       }
     }
+
     stage('Deploy') {
       steps{
         echo "Running Argocd sync command"
