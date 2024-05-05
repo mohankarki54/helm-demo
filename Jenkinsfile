@@ -4,7 +4,13 @@ pipeline {
         string(name: 'argocdServer', defaultValue: 'argocd.qa.givelify.com', description: 'Argocd Server')
         string(name: 'applicationName', defaultValue: 'webapp-prod', description: 'Application Name')
         string(name: 'Replicas', defaultValue: '2', description: 'Enter the replicas count')
-        string(name: 'BRANCH', defaultValue: 'main', description: 'Enter the branch name')
+	gitParameter(
+            branchFilter: 'origin/(.*)', 
+            defaultValue: 'main', 
+            description: 'Select the branch to build', 
+            name: 'BRANCH', 
+            type: 'PT_BRANCH'
+        )
     }
 
 	environment {
