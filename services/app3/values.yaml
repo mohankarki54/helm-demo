@@ -1,0 +1,26 @@
+appName: giving-donors
+replicas: 1
+namespace: default
+
+configmap:
+  name: myconfig
+  data:
+    CUSTOM_HEADER: "This is deployed with helm"
+
+service:
+  ports:
+    port1: 80
+    protocol1: TCP
+  type: LoadBalancer
+
+image:
+  name: stacksimplify/kube-nginxapp2
+  tag: 1.0.0
+
+resources:
+  requests:
+    memory: "16Mi"
+    cpu: "50m"
+  limits:
+    memory: "128Mi"
+    cpu: "100m"   
