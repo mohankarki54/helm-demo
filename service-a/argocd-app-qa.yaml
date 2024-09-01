@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: service-a
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: service-a
+spec:
+  sources:
+  - repoURL: 'https://github.com/mohankarki54/helm-repo'
+    chart: services
+    targetRevision: 1.0.0
+    helm:
+      valueFiles:
+      - $values/service-a/values-qa.yaml
+  - repoURL: 'https://github.com/mohankarki54/helm-demo.git'
+    targetRevision: main
+    ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: qa-system-engineering

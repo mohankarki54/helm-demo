@@ -1,0 +1,22 @@
+appName: testing1
+replicas: 1
+namespace: qa-systems-engineering
+
+service:
+  ports:
+    port1: 80
+    protocol1: TCP
+  type: LoadBalancer
+
+image:
+  name: nginx
+  pullPolicy: IfNotPresent
+  tag: 1.0.0
+
+resources:
+  requests:
+    memory: "5Mi"
+    cpu: "0.5G"
+  limits:
+    memory: "5Mi"
+    cpu: "0.5G"
