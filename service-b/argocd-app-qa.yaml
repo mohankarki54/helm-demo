@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: service-a
+  name: service-b
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    name: service-a
+    name: service-b
 spec:
   project: qa-systems-engineering
   sources:
@@ -15,7 +15,7 @@ spec:
     targetRevision: 1.0.0
     helm:
       valueFiles:
-      - $values/service-a/values-qa.yaml
+      - $values/service-b/values-qa.yaml
   - repoURL: 'https://github.com/mohankarki54/helm-demo.git'
     targetRevision: main
     ref: values

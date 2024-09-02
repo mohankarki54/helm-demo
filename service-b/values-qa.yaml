@@ -1,4 +1,4 @@
-appName: service-a
+appName: service-b
 replicas: 1
 namespace: qa-systems-engineering
 
