@@ -1,0 +1,22 @@
+appName: template-application
+replicas: 3
+namespace: qa-systems-engineering
+
+service:
+  ports:
+    http_port: 80
+    protocol: TCP
+  type: ClusterIP
+
+image:
+  name: nginx
+  pullPolicy: IfNotPresent
+  tag: 1.0.0
+
+resources:
+  requests:
+    memory: "5Mi"
+    cpu: "0.5G"
+  limits:
+    memory: "5Mi"
+    cpu: "0.5G"
