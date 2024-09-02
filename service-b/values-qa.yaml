@@ -15,8 +15,8 @@ image:
 
 resources:
   requests:
-    memory: "5Mi"
-    cpu: "0.5G"
+    memory: "0.5G"
+    cpu: "0.5"
   limits:
-    memory: "5Mi"
-    cpu: "0.5G"
+    memory: "5Gi"
+    cpu: "0.5"
